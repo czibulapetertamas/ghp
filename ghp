@@ -1,11 +1,8 @@
 #!/bin/bash
 
 GHP_DIR="$HOME/.ghp"
-PHP_DIR="$GHP_DIR/php"
 DOCKERFILE="$GHP_DIR/Dockerfile"
 ALIAS_FILE="$GHP_DIR/aliases"
-
-mkdir -p "$PHP_DIR"
 
 # Create Dockerfile if it doesn't exist
 if [ ! -f "$DOCKERFILE" ]; then
