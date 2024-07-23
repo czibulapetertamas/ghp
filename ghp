@@ -50,16 +50,10 @@ function use_php() {
   echo "$php_alias" >> "$ALIAS_FILE"
   echo "$composer_alias" >> "$ALIAS_FILE"
 
-  # Source the alias file in the current shell session
-  if [ -n "$BASH_VERSION" ]; then
-    source "$ALIAS_FILE"
-  elif [ -n "$ZSH_VERSION" ]; then
-    source "$ALIAS_FILE"
-  else
-    echo "Unsupported shell."
-  fi
+  echo "PHP $version aliases updated."
 
-  echo "Now using PHP $version."
+  # Notify user to run `source ~/.ghp/aliases` manually
+  echo "Please run 'source $ALIAS_FILE' in your current terminal to update aliases."
 }
 
 function list_php() {
