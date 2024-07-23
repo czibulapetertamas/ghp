@@ -31,13 +31,24 @@ fi
 
 function install_php() {
   local version=$1
-  docker build \
-    --build-arg USER_ID=$(id -u) \
-    --build-arg GROUP_ID=$(id -g) \
-    --build-arg PHP_VERSION="$version-cli" \
-    -t "gpsystem/php:${version}-cli" . -f "$DOCKERFILE"
+  local php_alias="alias php=\"docker run --rm -it -v \$(pwd):/var/www/html --user \$(id -u):\$(id -g) --network host gpsystem/php:${version}-cli php\""
+  local composer_alias="alias composer=\"docker run --rm -it -v \$(pwd):/var/www/html --user \$(id -u):\$(id -g) --network host gpsystem/php:${version}-cli composer\""
 
-  echo "PHP $version installed."
+  # Update alias file
+  echo "# PHP Aliases" > "$ALIAS_FILE"
+  echo "$php_alias" >> "$ALIAS_FILE"
+  echo "$composer_alias" >> "$ALIAS_FILE"
+
+  # Source the alias file in the current shell session
+  if [ -n "$BASH_VERSION" ]; then
+    source "$ALIAS_FILE"
+  elif [ -n "$ZSH_VERSION" ]; then
+    source "$ALIAS_FILE"
+  else
+    echo "Unsupported shell."
+  fi
+
+  echo "Now using PHP $version."
 }
 
 function use_php() {
